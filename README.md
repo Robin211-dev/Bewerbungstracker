@@ -82,7 +82,7 @@ Version) hinterlegen. CTAM speichert nur die **Referenz** auf die Datei
 zeigen ein 📎-Symbol.
 
 ### Statistik-Dashboard
-„📊 Statistik“ öffnet ein separates Fenster mit:
+„Statistik“ öffnet ein separates Fenster mit:
 - Bewerbungen pro Monat (Balkendiagramm)
 - Status-Verteilung (Balkendiagramm)
 - Kennzahlen: Interview-Quote, Angebots-Quote (Interview → Angebot)
@@ -102,45 +102,13 @@ Der „☀ Hell / 🌙 Dunkel“-Button in der Sidebar wechselt zur Laufzeit
 zwischen den in `theme.py` definierten Paletten, ohne Neustart. Alle Farben
 sind zentral in `theme.py` gepflegt.
 
-### Verschlüsselte Datenbank (optional)
-Ist das Paket `sqlcipher3` installiert, kann `ApplicationManager` mit einem
-`encryption_key` initialisiert werden, um die `.db`-Datei zu verschlüsseln
-(sinnvoll auf gemeinsam genutzten Rechnern). Ohne dieses Paket läuft CTAM
-automatisch mit normalem, unverschlüsseltem sqlite3 weiter – keine
-Zusatzabhängigkeit erzwungen.
-
-### Job-Import aus Link (optional, benötigt Internetverbindung)
+### Job-Import aus Link
 Im Formular „Neue Bewerbung“ / „Bearbeiten“ gibt es neben dem Job-Link-Feld
-einen Button „⬇ Aus Link importieren“. Beim Klick:
+einen Button „⬇ Aus Link importieren“.
 
-1. Lädt CTAM die angegebene Seite (Timeout 10s, läuft in einem Hintergrund-
-   Thread, damit die Oberfläche währenddessen nicht einfriert).
-2. Eine **Text-Heuristik** (kein KI-Modell, keine externe API) sucht nach:
-   - **Firma**: zuerst über Meta-Tags (`og:site_name`), dann über
-     Textmuster wie „bei &lt;Firma&gt;“ oder „Arbeitgeber: &lt;Firma&gt;“.
-   - **Rolle**: zuerst über die erste `<h1>`-Überschrift der Seite, sonst
-     über den `<title>`-Tag (Muster wie „Jobtitel | Firma“).
-   - **Standort** (optional): über Muster wie „Standort:“ oder „Ort:“,
-     landet als Notiz im Anmerkungsfeld.
-3. Erkannte Werte werden **nur in leere Felder** eingetragen – bereits
-   ausgefüllte Angaben werden nie überschrieben.
-
-**Wichtige Einschränkungen:**
-- Funktioniert nur bei Seiten, deren Inhalt direkt im HTML steht. Seiten,
-  die Inhalte erst per JavaScript nachladen (viele moderne Karriereportale),
-  liefern keinen auswertbaren Text – CTAM meldet das dann klar statt etwas
-  zu raten.
-- Manche Plattformen (z. B. LinkedIn) blockieren automatisierte Abrufe oder
-  verlangen ein Login; der Import schlägt dort typischerweise fehl.
-- Die Erkennung ist eine Heuristik, keine Garantie. **Alle Werte immer vor
-  dem Speichern prüfen** – das Formular bleibt danach normal editierbar.
-- Dies ist die **einzige** Stelle im gesamten Programm, die eine
-  Internetverbindung herstellt, und nur dann, wenn aktiv darauf geklickt
-  wird.
-
-## Datenmodell
-
-**Bewerbung**: `id, firmenname, rollenbezeichnung, status, bewerbungsdatum,
-joblink, followup_datum, anmerkungen, anhang_pfad`
+Einschränkungen:
+- Funktioniert nur bei Seiten, deren Inhalt direkt im HTML steht. 
+- Manche Plattformen blockieren automatisierte Abrufe oder
+  verlangen ein Login -> Import schlägt fehl.
 
 **Interaktion**: `id, bewerbung_id (FK), datum, art, details`
