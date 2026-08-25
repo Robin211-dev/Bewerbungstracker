@@ -1,0 +1,7 @@
+PyQt6>=6.6
+matplotlib>=3.8
+
+# Optional: aktiviert verschlüsselte Datenbanken (siehe theme.py / README).
+# Ohne dieses Paket läuft CTAM automatisch mit normalem, unverschlüsseltem
+# sqlite3 weiter - kein Zwang zur Installation.
+# sqlcipher3-binary>=0.5
